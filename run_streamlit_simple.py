@@ -16,8 +16,14 @@ def main():
     print("应用已启动，请手动在浏览器中访问: http://localhost:8501")
     print("按 Ctrl+C 停止应用")
 
+    # 判断是否为PyInstaller打包环境
+    if getattr(sys, 'frozen', False):
+        python_cmd = 'python'
+    else:
+        python_cmd = sys.executable
+
     cmd = [
-        sys.executable, '-m', 'streamlit', 'run', 'app.py',
+        python_cmd, '-m', 'streamlit', 'run', 'app.py',
         '--server.headless', 'true',
         '--server.port', '8501',
         '--server.address', 'localhost',
@@ -29,7 +35,6 @@ def main():
     env['STREAMLIT_BROWSER_GATHER_USAGE_STATS'] = 'false'
     env['STREAMLIT_SERVER_HEADLESS'] = 'true'
 
-    # 只运行一次，不循环
     subprocess.run(cmd, env=env)
 
 if __name__ == '__main__':
